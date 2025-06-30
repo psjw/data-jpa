@@ -13,7 +13,7 @@ import study.datajpa.entity.Member;
 
 @SpringBootTest
 @Transactional
-//@Rollback(false)
+@Rollback(false)
 class MemberRepositoryTest {
     @Autowired MemberRepository memberRepository;
 
