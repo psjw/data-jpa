@@ -396,4 +396,37 @@ class MemberRepositoryTest {
         }
 
     }
+
+    @Test
+    public void queryHint(){
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+//        Member findMember = memberRepository.findById(member1.getId()).get();
+        //업데이트 쿼리 안나감 -> 스냅샷이 없음
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+
+        em.flush(); //변경감지 -> 치명적 단점 (객체를 두개 가지고 있어야함 원본데이터, 변경데이터)
+
+    }
+
+    @Test
+    public void lock(){
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> result = memberRepository.findLockByUsername("member1");
+
+        List<Member> member2 = memberRepository.findOptimisticLockLockByUsername("member1");
+
+    }
 }
