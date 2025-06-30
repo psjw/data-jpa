@@ -9,6 +9,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
@@ -219,6 +224,112 @@ class MemberRepositoryTest {
         System.out.println("findMember3 = " + findMember3);
     }
 
+
+
+    @Test
+    public void paging(){
+        //given
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
+
+        int age = 10;
+
+        //when
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+
+        //then
+        List<Member> content = page.getContent();
+        long totalElements = page.getTotalElements();
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+
+        System.out.println("totalElements = " + totalElements);
+
+        Assertions.assertThat(content.size()).isEqualTo(3);
+        Assertions.assertThat(totalElements).isEqualTo(5);
+        Assertions.assertThat(page.getNumber()).isEqualTo(0);
+        Assertions.assertThat(page.getTotalPages()).isEqualTo(2);
+        Assertions.assertThat(page.isFirst()).isTrue();
+        Assertions.assertThat(page.hasNext()).isTrue();
+
+    }
+
+
+
+    @Test
+    public void pagingSlice(){
+        //given
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
+
+        int age = 10;
+
+        //when
+        //SLICE는 무한 스크롤 더보기 등 페이징이 숫자로 관리되지 않을  경우에만 사용
+        Slice<Member> page = memberRepository.findSliceByAge(age, pageRequest);
+
+
+        //then
+        List<Member> content = page.getContent();
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+
+
+        Assertions.assertThat(content.size()).isEqualTo(3);
+        Assertions.assertThat(page.getNumber()).isEqualTo(0);
+        Assertions.assertThat(page.isFirst()).isTrue();
+        Assertions.assertThat(page.hasNext()).isTrue();
+
+    }
+
+
+
+    @Test
+    public void pagingSliceCountDetach(){
+        //given
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
+
+        int age = 10;
+
+        //when
+        //Join이 복잡할 경우 CountQuery를 분리
+        Page<Member> page = memberRepository.findCountDetachByAge(age, pageRequest);
+
+        //MemberDto로 변환
+        Page<MemberDto> toMap = page.map(
+                member -> new MemberDto(member.getId(), member.getUsername(), null));
+        //then
+        List<Member> content = page.getContent();
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+
+
+        Assertions.assertThat(content.size()).isEqualTo(3);
+        Assertions.assertThat(page.getNumber()).isEqualTo(0);
+        Assertions.assertThat(page.isFirst()).isTrue();
+        Assertions.assertThat(page.hasNext()).isTrue();
+
+    }
 
 
 
