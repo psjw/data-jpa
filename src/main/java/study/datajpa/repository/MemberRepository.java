@@ -1,9 +1,11 @@
 package study.datajpa.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -17,4 +19,22 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //2번째로 쿼리메서드를 찾음
     //@Param("username") Named 쿼리 안에 :username이 있는경우에 작성
     List<Member> findByUsername(@Param("username") String username);
+
+    //애플리케이션 로딩시 에러 체크됨
+    @Query("select m from Member m where m.username = :username  and m.age = :age")
+    List<Member> findUser(@Param("username") String username, @Param("age") int age);
+
+    @Query("select m.username from Member m")
+    List<String> findUsernameList();
+
+    @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
+    List<MemberDto> findMemberDto();
+
+    @Query("select m from Member m where m.username in :names")
+    List<Member> findByNames(@Param("names") List<String> names);
+
+
+    List<Member> findListByUsername(String username); //컬렉션
+    Member findMemberByUsername(String username); //단건
+    Optional<Member> findOptionalMemberByUsername(String username); //단건 Optional
 }
