@@ -19,6 +19,10 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id","usernme","age"})
+//로딩시점에 에러 체크가 가능
+@NamedQuery(
+        name="Member.findByUsername",
+        query="select m from Member m where m.username = :username")
 public class Member {
 
     @Id
