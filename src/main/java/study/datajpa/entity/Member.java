@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,11 @@ public class Member {
         if(team != null) {
             changeTeam(team);
         }
+    }
+
+    public Member(String useranme, int age) {
+        this.username = useranme;
+        this.age = age;
     }
 
     public void changeTeam(Team team) {
