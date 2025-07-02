@@ -6,9 +6,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.repository.MemberRepository;
+import study.datajpa.repository.TeamRepository;
 
 @SpringBootTest
 @Transactional
@@ -17,6 +20,12 @@ class MemberTest {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     public void testEntity(){
@@ -49,6 +58,50 @@ class MemberTest {
         }
 
 
+    }
+
+    @Test
+    public void JpaEventJpaBaseEntity() throws InterruptedException {
+        //given
+        Member member = new Member("member1");
+        memberRepository.save(member);
+
+        Thread.sleep(100);
+        member.setUsername("member2");
+        
+        em.flush(); //@PreUpdate
+        em.clear(); 
+
+        //when
+        Member findMember = memberRepository.findById(member.getId()).get();
+        
+        //then
+        System.out.println("findMember.getCreatedDate = " + findMember.getCreatedDate());
+        System.out.println("findMember.getUpdatedDate() = " + findMember.getUpdatedDate());
+    }
+
+
+    @Test
+    public void JpaEventBaseEntity() throws InterruptedException {
+        //given
+        Team teamA = new Team("teamA");
+
+        teamRepository.save(teamA);
+
+
+        Thread.sleep(100);
+
+        em.flush(); //@PreUpdate
+        em.clear();
+
+        //when
+        Team findTeam = teamRepository.findById(teamA.getId()).get();
+
+        //then
+        System.out.println("findTeam.getCreatedDate() = " + findTeam.getCreatedDate());
+        System.out.println("findTeam.getLastModifiedDate() = " + findTeam.getLastModifiedDate());
+        System.out.println("findTeam.getCreatedBy() = " + findTeam.getCreatedBy());
+        System.out.println("findTeam.getLastModifiedBy() = " + findTeam.getLastModifiedBy());
     }
 
 }
