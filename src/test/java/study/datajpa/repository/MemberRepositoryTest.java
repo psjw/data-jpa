@@ -429,4 +429,10 @@ class MemberRepositoryTest {
         List<Member> member2 = memberRepository.findOptimisticLockLockByUsername("member1");
 
     }
+
+
+    @Test
+    public void callCustom(){
+        List<Member> memberCustom = memberRepository.findMemberCustom();
+    }
 }
