@@ -107,9 +107,9 @@ class MemberRepositoryTest {
 
 
     @Test
-    public void testNamedQuery(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("BBB",20);
+    public void testNamedQuery() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -121,9 +121,9 @@ class MemberRepositoryTest {
 
 
     @Test
-    public void testQuery(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("BBB",20);
+    public void testQuery() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -135,9 +135,9 @@ class MemberRepositoryTest {
 
 
     @Test
-    public void findUsernameList(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("BBB",20);
+    public void findUsernameList() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -150,13 +150,12 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void findMemberDto(){
+    public void findMemberDto() {
         Team team1 = new Team("teamA");
         teamRepository.save(team1);
 
-        Member member1 = new Member("AAA",10);
+        Member member1 = new Member("AAA", 10);
         memberRepository.save(member1);
         member1.setTeam(team1);
 
@@ -169,15 +168,14 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void findByNames(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("BBB",20);
+    public void findByNames() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
-        List<Member> result = memberRepository.findByNames(Arrays.asList("AAA","BBB"));
+        List<Member> result = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
 
         for (Member member : result) {
             System.out.println("member = " + member);
@@ -187,9 +185,9 @@ class MemberRepositoryTest {
 
 
     @Test
-    public void returnType(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("BBB",20);
+    public void returnType() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
 
@@ -212,12 +210,10 @@ class MemberRepositoryTest {
     }
 
 
-
-
     @Test
-    public void returnTypeError(){
-        Member member1 = new Member("AAA",10);
-        Member member2 = new Member("AAA",20);
+    public void returnTypeError() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("AAA", 20);
         memberRepository.save(member1);
         memberRepository.save(member2);
         //Spring추상한 예외에 의존(다른 DB여도 IncorrectResultSizeDataAccessException를 내려주어 클라이언트 코드 변환 필요없음)
@@ -228,15 +224,14 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void paging(){
+    public void paging() {
         //given
-        memberRepository.save(new Member("member1",10));
-        memberRepository.save(new Member("member2",10));
-        memberRepository.save(new Member("member3",10));
-        memberRepository.save(new Member("member4",10));
-        memberRepository.save(new Member("member5",10));
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
 
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
 
@@ -265,15 +260,14 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void pagingSlice(){
+    public void pagingSlice() {
         //given
-        memberRepository.save(new Member("member1",10));
-        memberRepository.save(new Member("member2",10));
-        memberRepository.save(new Member("member3",10));
-        memberRepository.save(new Member("member4",10));
-        memberRepository.save(new Member("member5",10));
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
 
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
 
@@ -299,15 +293,14 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void pagingSliceCountDetach(){
+    public void pagingSliceCountDetach() {
         //given
-        memberRepository.save(new Member("member1",10));
-        memberRepository.save(new Member("member2",10));
-        memberRepository.save(new Member("member3",10));
-        memberRepository.save(new Member("member4",10));
-        memberRepository.save(new Member("member5",10));
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
 
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Direction.DESC, "username"));
 
@@ -335,15 +328,14 @@ class MemberRepositoryTest {
     }
 
 
-
     @Test
-    public void bulkUpdate(){
+    public void bulkUpdate() {
         //given
-        memberRepository.save(new Member("member1",10));
-        memberRepository.save(new Member("member2",19));
-        memberRepository.save(new Member("member3",20));
-        memberRepository.save(new Member("member4",21));
-        memberRepository.save(new Member("member5",40));
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
 
         //when
         int resultCount = memberRepository.bulkAgePlus(20);
@@ -361,7 +353,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void findMemberLazy(){
+    public void findMemberLazy() {
         //given
         //member1 -> teamA
         //member2 -> teamB
@@ -378,7 +370,7 @@ class MemberRepositoryTest {
 
         em.flush();
         em.clear();
-        
+
         //when N+1
         //select Member 1
 //        List<Member> members = memberRepository.findAll();
@@ -396,7 +388,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void queryHint(){
+    public void queryHint() {
         //given
         Member member1 = new Member("member1", 10);
         memberRepository.save(member1);
@@ -414,7 +406,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void lock(){
+    public void lock() {
         //given
         Member member1 = new Member("member1", 10);
         memberRepository.save(member1);
@@ -430,12 +422,12 @@ class MemberRepositoryTest {
 
 
     @Test
-    public void callCustom(){
+    public void callCustom() {
         List<Member> memberCustom = memberRepository.findMemberCustom();
     }
 
     @Test
-    public void specBasic(){
+    public void specBasic() {
         //given
         Team teamA = new Team("teamA");
         em.persist(teamA);
@@ -458,7 +450,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void queryByExample(){
+    public void queryByExample() {
         //given
         Team teamA = new Team("teamA");
         em.persist(teamA);
@@ -492,7 +484,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    public void projections(){
+    public void projections() {
         //given
         Team teamA = new Team("teamA");
         em.persist(teamA);
@@ -525,6 +517,30 @@ class MemberRepositoryTest {
     }
 
 
+    @Test
+    public void nativeQuery() {
+        //given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
 
 
+        //when
+//        Member result = memberRepository.findByNativeQuery("m1");
+//        System.out.println("result = " + result);
+
+        Page<MemberProjection> result1 = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = result1.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection.getUsername() = " + memberProjection.getUsername());
+            System.out.println("memberProjection.getTeamName() = " + memberProjection.getTeamName());
+        }
+    }
 }
